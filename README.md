@@ -7,7 +7,7 @@
 ![GPT](https://img.shields.io/badge/GPT--OSS-120B-blueviolet?style=flat)
 ![License](https://img.shields.io/badge/License-MIT-green?style=flat)
 
-An API that reads a job posting, looks at your resume, and writes you a cold email —
+An AI tool that reads a job posting, looks at your resume, and writes you a cold email —
 but only if your projects actually match the job. If they don't, it tells you honestly
 instead of writing something misleading.
 
