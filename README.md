@@ -1,11 +1,25 @@
-# 📧 Cold Email Generator API
+# 📧 AI Cold Email Generator
 
+![Python](https://img.shields.io/badge/Python-3.10+-blue?style=flat&logo=python)
+![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=flat&logo=streamlit&logoColor=white)
+![LangChain](https://img.shields.io/badge/LangChain-000000?style=flat&logo=langchain)
+![ChromaDB](https://img.shields.io/badge/ChromaDB-Vector%20DB-orange?style=flat)
+![GPT](https://img.shields.io/badge/GPT--OSS-120B-blueviolet?style=flat)
+![License](https://img.shields.io/badge/License-MIT-green?style=flat)
 
 An API that reads a job posting, looks at your resume, and writes you a cold email —
 but only if your projects actually match the job. If they don't, it tells you honestly
 instead of writing something misleading.
 
+
+## 🖥️ Demo
+
+![img1](https://github.com/UchiaObito004/Cold_email/blob/main/img1.png?raw=true)
+
+![img2](https://github.com/UchiaObito004/Cold_email/blob/main/img2.png?raw=true)
+
 **Live demo:** https://cold-email-7r0i.onrender.com
+
 **Interactive docs:** https://cold-email-7r0i.onrender.com/docs
 
 ---
@@ -65,7 +79,7 @@ Final email
 | Part | Technology |
 |---|---|
 | API framework | FastAPI |
-| LLM | LLaMA 3 via Groq |
+| LLM | GPT--OSS-120B via Groq |
 | Orchestration | LangChain |
 | Vector search | ChromaDB |
 | Resume reading | pypdf |
