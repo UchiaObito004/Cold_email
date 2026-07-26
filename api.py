@@ -392,11 +392,24 @@ def query_session_portfolio(session_collection, skills: list, n_results: int = 1
 
 
 SKILL_MAP = {
-    "langchain": ["llm", "large language models", "prompt engineering", "generative ai", "ai"],
-    "llama-3": ["llm", "large language models", "generative ai"],
-    "groq": ["llm", "large language models", "generative ai"],
-    "rag": ["retrieval augmented generation", "retrieval", "generative ai", "llm"],
-    "chromadb": ["vector database", "retrieval", "rag"],
+    "langchain": [
+        "llm", "large language models", "prompt engineering", "generative ai",
+        "ai", "genai", "ai application development", "rag frameworks",
+        "retrieval augmented generation",
+    ],
+    "llama-3": ["llm", "large language models", "generative ai", "genai"],
+    "groq": ["llm", "large language models", "generative ai", "genai"],
+    "rag": [
+        "retrieval augmented generation", "retrieval", "generative ai", "llm",
+        "semantic search", "vectorization", "document processing",
+        "chunking strategies", "context augmentation",
+        "grounded response generation",
+    ],
+    "chromadb": [
+        "vector database", "retrieval", "rag", "vectorization",
+        "semantic search", "embeddings",
+    ],
+    "pydantic": ["structured outputs", "data validation"],
     "fastapi": ["api", "apis", "rest api"],
     "scikit-learn": ["machine learning", "ml"],
     "tensorflow": ["deep learning", "machine learning"],
@@ -409,19 +422,28 @@ SKILL_MAP = {
 }
 
 
+def _expand_tokens(tokens: set) -> set:
+    """Expand a set of single-word tokens using SKILL_MAP synonyms, tokenizing each
+    synonym phrase into individual words. This matters because a synonym like "large
+    language models" needs to be split into {"large","language","models"} to actually
+    overlap with a job skill phrased the same way - adding it as one un-split phrase
+    (as the old per-function `expand()` helpers did) silently never matches anything."""
+    expanded = set(tokens)
+    for token in list(tokens):
+        if token in SKILL_MAP:
+            for synonym in SKILL_MAP[token]:
+                expanded.update(
+                    w.lower() for w in re.split(r'[\s,/()+\-]+', synonym) if len(w) > 1
+                )
+    return expanded
+
+
 def filter_relevant_projects(candidates: list, job_skills: list, min_score: float = 6.0) -> list:
     """Combines ChromaDB semantic similarity + exact skill overlap + synonym expansion
     into one relevance score, so the strongest, most defensible projects surface first."""
 
     def tokenize(text):
         return {w.lower() for w in re.split(r'[\s,/()+\-]+', text) if len(w) > 1}
-
-    def expand(tokens):
-        expanded = set(tokens)
-        for token in list(tokens):
-            if token in SKILL_MAP:
-                expanded.update(x.lower() for x in SKILL_MAP[token])
-        return expanded
 
     def fuzzy_overlap(a, b):
         overlap = 0
@@ -438,11 +460,11 @@ def filter_relevant_projects(candidates: list, job_skills: list, min_score: floa
                     break
         return overlap
 
-    job_tokens = expand(tokenize(", ".join(normalize_skills(job_skills))))
+    job_tokens = _expand_tokens(tokenize(", ".join(normalize_skills(job_skills))))
 
     ranked = []
     for project in candidates:
-        tech_tokens = expand(tokenize(project["techstack"]))
+        tech_tokens = _expand_tokens(tokenize(project["techstack"]))
         overlap = fuzzy_overlap(job_tokens, tech_tokens)
         similarity = project.get("similarity", 0)
         final_score = similarity * 10 + overlap
@@ -482,7 +504,11 @@ CATEGORY_KEYWORDS = {
     ],
     "ML/AI": [
         "machine", "learning", "deep", "tensorflow", "pytorch", "nlp", "llm",
-        "langchain", "rag", "ai", "scikit-learn", "genai", "keras",
+        "llms", "langchain", "rag", "ai", "scikit-learn", "genai", "keras",
+        "generative", "prompt", "embeddings", "embedding", "vectorization",
+        "vector", "chromadb", "langgraph", "llamaindex", "autogen", "crewai",
+        "semantic", "agentic", "chatbot", "transformer", "transformers",
+        "gpt", "llama", "mistral", "tokenization", "huggingface",
     ],
     "Mobile": [
         "ios", "android", "swift", "kotlin", "flutter", "mobile",
@@ -507,10 +533,11 @@ def _categorize_text(text: str) -> set:
 
 
 def _skill_present(skill_tokens: set, tech_tokens: set) -> bool:
-    if skill_tokens & tech_tokens:
+    expanded_tech_tokens = _expand_tokens(tech_tokens)
+    if skill_tokens & expanded_tech_tokens:
         return True
     for s in skill_tokens:
-        for t in tech_tokens:
+        for t in expanded_tech_tokens:
             if SequenceMatcher(None, s, t).ratio() >= 0.85:
                 return True
     return False
