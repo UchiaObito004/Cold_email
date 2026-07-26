@@ -176,7 +176,7 @@ AI can sometimes make things sound more impressive than they really are. A secon
 reviews the draft and removes anything that isn't actually true, before you ever see it.
 
 **Why Groq?**
-It's one of the fastest ways to run LLaMA 3 — emails generate in seconds, not minutes.
+It's one of the fastest ways to run gpt-oss-120b — emails generate in seconds, not minutes.
 
 **Why is everything in one file?**
 So anyone can download `api.py`, drop it next to a `requirements.txt`, and run it — no
