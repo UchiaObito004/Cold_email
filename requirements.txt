@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+python-multipart
+requests
+beautifulsoup4
+python-dotenv
+pypdf
+chromadb
+langchain-groq
+langchain-core
