@@ -1,0 +1,190 @@
+# 📧 Cold Email Generator API
+
+
+An API that reads a job posting, looks at your resume, and writes you a cold email —
+but only if your projects actually match the job. If they don't, it tells you honestly
+instead of writing something misleading.
+
+**Live demo:** https://cold-email-7r0i.onrender.com
+**Interactive docs:** https://cold-email-7r0i.onrender.com/docs
+
+---
+
+## 🧠 How it works
+
+```
+Get the job posting
+- Either a link or pasted text
+|
+Get the resume
+- Uploaded PDF file
+|
+Read both documents
+- Pull out the job's requirements and the resume's projects
+|
+Understand what each one means
+- AI figures out what skills the job needs
+- AI figures out what the resume actually offers
+|
+Compare them
+- Check how well the resume's projects match the job's requirements
+|
+Is it a real match?
+- If no: stop here, don't write an email pretending it's a fit
+- If yes: continue
+|
+Write a first draft of the email
+- Only using projects that genuinely matched
+|
+Double-check the draft
+- A second AI pass checks it isn't exaggerating or making things up
+|
+Does it need fixing?
+- If no: the draft is good
+- If yes: rewrite the flagged parts
+|
+Final email
+- Honest, only mentions real matching skills
+```
+
+---
+
+## ✨ Features
+
+- 🔗 **Works with a job link or pasted text** — paste any job URL, or copy-paste the description directly
+- 📄 **Reads your resume automatically** — upload a PDF, it pulls out your projects and background
+- 🎯 **Honest matching** — refuses to generate an email if your projects don't genuinely fit the job
+- 🤖 **Self-checking emails** — every email is checked by a second AI pass for made-up claims before it's returned
+- 🐳 **Runs anywhere** — packaged as a Docker image, works on any machine or server
+- ☁️ **Live and hosted** — already deployed and usable from any device, no install needed
+
+---
+
+## 🛠️ Tech stack
+
+| Part | Technology |
+|---|---|
+| API framework | FastAPI |
+| LLM | LLaMA 3 via Groq |
+| Orchestration | LangChain |
+| Vector search | ChromaDB |
+| Resume reading | pypdf |
+| Web scraping | BeautifulSoup + Requests |
+| Packaging | Docker |
+| Hosting | Render |
+
+---
+
+## 📁 Project structure
+
+```
+Cold_email/
+├── api.py              # Everything — parsing, matching, email generation, API endpoints
+├── requirements.txt     # Python dependencies
+├── Dockerfile           # Docker build instructions
+└── .env                 # Your Groq API key (not committed)
+```
+
+Everything lives in one file (`api.py`) on purpose — no extra files needed to run it.
+
+---
+
+## ⚙️ Setup & installation
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/UchiaObito004/Cold_email.git
+cd Cold_email
+```
+
+### 2. Install dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Set up your API key
+Create a `.env` file in the root folder:
+```
+GROQ_API_KEY=your_groq_api_key_here
+```
+Get a free key at 👉 [console.groq.com](https://console.groq.com)
+
+### 4. Run it
+```bash
+uvicorn api:app --reload
+```
+Open `http://localhost:8000/docs` in your browser to try it out.
+
+---
+
+## 🐳 Run with Docker instead
+
+No Python setup needed — just Docker:
+```bash
+docker pull ashborn004/cold-email-api:latest
+docker run -p 8000:8000 -e GROQ_API_KEY=your_groq_api_key_here ashborn004/cold-email-api:latest
+```
+Then open `http://localhost:8000/docs`.
+
+---
+
+## 🚀 Usage
+
+The easiest way to try it is through the interactive docs at `/docs` — it lets you fill in
+a form and test any endpoint from your browser, no coding needed.
+
+**Main endpoints:**
+
+| Endpoint | What it does |
+|---|---|
+| `POST /jobs/extract` | Reads a job posting and pulls out the role, skills, and requirements |
+| `POST /resume/parse` | Reads your resume PDF and pulls out your projects and background |
+| `POST /match` | Checks how well your projects match a job's requirements |
+| `POST /email/generate` | Writes the email from a job and your matched projects |
+| `POST /apply` | Does all of the above in one step — job + resume in, email out |
+
+`POST /apply` is the one most people want — give it a job (link or text), your resume PDF,
+and your contact details, and it returns a ready-to-send email (or an honest "this isn't a
+strong match" if your projects don't fit).
+
+---
+
+## 🔑 Key decisions, explained simply
+
+**Why does it sometimes refuse to write an email?**
+Because a cold email claiming skills you don't have doesn't help you — it just wastes the
+recruiter's time and yours. The app checks real skill overlap before writing anything, and
+tells you honestly if there isn't enough of a match.
+
+**Why does every email get double-checked?**
+AI can sometimes make things sound more impressive than they really are. A second pass
+reviews the draft and removes anything that isn't actually true, before you ever see it.
+
+**Why Groq?**
+It's one of the fastest ways to run LLaMA 3 — emails generate in seconds, not minutes.
+
+**Why is everything in one file?**
+So anyone can download `api.py`, drop it next to a `requirements.txt`, and run it — no
+tracking down multiple files or figuring out imports.
+
+---
+
+## 🤝 Contributing
+
+Pull requests are welcome. For bigger changes, open an issue first so we can talk it
+through.
+
+---
+
+## 👤 Author
+
+**Bhushan Verma**
+
+- 🎓 B.Tech AI & Data Science — graduating 2027
+- 💼 GitHub: [UchiaObito004](https://github.com/UchiaObito004)
+
+---
+
+## 📄 License
+
+[MIT](LICENSE)
