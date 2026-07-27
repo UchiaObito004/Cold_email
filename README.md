@@ -27,40 +27,52 @@ instead of writing something misleading.
 
 ## 🧠 How it works
 
-```
-Get the job posting
-- Either a link or pasted text
-|
-Get the resume
-- Uploaded PDF file
-|
-Read both documents
-- Pull out the job's requirements and the resume's projects
-|
-Understand what each one means
-- AI figures out what skills the job needs
-- AI figures out what the resume actually offers
-|
-Compare them
-- Check how well the resume's projects match the job's requirements
-|
-Is it a real match?
-- If no: stop here, don't write an email pretending it's a fit
-- If yes: continue
-|
-Write a first draft of the email
-- Only using projects that genuinely matched
-|
-Double-check the draft
-- A second AI pass checks it isn't exaggerating or making things up
-|
-Does it need fixing?
-- If no: the draft is good
-- If yes: rewrite the flagged parts
-|
-Final email
-- Honest, only mentions real matching skills
-```
+User provides Job URL/Text
+          │
+          ▼
+BeautifulSoup extracts the job description (if URL)
+          │
+          ▼
+LLM extracts structured information
+(Job title, required skills, responsibilities)
+          │
+          ▼
+Resume is parsed
+          │
+          ▼
+Projects are converted into embeddings
+and stored in ChromaDB
+          │
+          ▼
+ChromaDB retrieves the most relevant projects
+          │
+          ▼
+Python calculates:
+• Semantic similarity
+• Skill overlap
+          │
+          ▼
+Final Match Score
+          │
+      Is score above threshold?
+         /                 \
+      No                    Yes
+      │                      │
+Return:                  Generate
+"Not a good             Cold Email
+ match"                    │
+                            ▼
+                  Validation Check
+                  (Second LLM pass)
+                            │
+                            ▼
+          Is every claim supported by
+               the resume/projects?
+                   /             \
+                 No               Yes
+                 │                 │
+        Remove/fix false       Return final
+           statements            email
 
 ---
 
