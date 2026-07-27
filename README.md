@@ -87,16 +87,16 @@ Return:                  Generate
 - 📄 **Reads your resume automatically** — upload a PDF, it pulls out your projects and background
 - 🎯 **Honest matching** — refuses to generate an email if your projects don't genuinely fit the job
 - 🤖 **Self-checking emails** — every email is checked by a second AI pass for made-up claims before it's returned
+- 🖥️ **Simple web UI** — built with Streamlit, no API tools or coding needed to use it
 - 🐳 **Runs anywhere** — packaged as a Docker image, works on any machine or server
 - ☁️ **Live and hosted** — already deployed and usable from any device, no install needed
-
 ---
 
 ## 🛠️ Tech stack
 
 | Part | Technology |
 |---|---|
-| API framework | FastAPI |
+| UI | Streamlit |
 | LLM | GPT--OSS-120B via Groq |
 | Orchestration | LangChain |
 | Vector search | ChromaDB |
@@ -108,15 +108,14 @@ Return:                  Generate
 ---
 
 ## 📁 Project structure
-
+```
 Cold_email/
-├── app.py # Streamlit app — UI, parsing, matching, email generation
-├── requirements.txt # Python dependencies
-├── Dockerfile # Docker build instructions
-└── .env # Your Groq API key (not committed)
----
+├── app.py               # Streamlit app — UI, parsing, matching, email generation
+├── requirements.txt     # Python dependencies
+├── Dockerfile           # Docker build instructions
+└── .env                 # Your Groq API key (not committed)
+```
 
-Everything lives in one file (`app.py`) on purpose — no extra files needed to run it.
 
 ---
 
