@@ -1,0 +1,46 @@
+User provides Job URL/Text
+          │
+          ▼
+BeautifulSoup extracts the job description (if URL)
+          │
+          ▼
+LLM extracts structured information
+(Job title, required skills, responsibilities)
+          │
+          ▼
+Resume is parsed
+          │
+          ▼
+Projects are converted into embeddings
+and stored in ChromaDB
+          │
+          ▼
+ChromaDB retrieves the most relevant projects
+          │
+          ▼
+Python calculates:
+• Semantic similarity
+• Skill overlap
+          │
+          ▼
+Final Match Score
+          │
+      Is score above threshold?
+         /                 \
+      No                    Yes
+      │                      │
+Return:                  Generate
+"Not a good             Cold Email
+ match"                    │
+                            ▼
+                  Validation Check
+                  (Second LLM pass)
+                            │
+                            ▼
+          Is every claim supported by
+               the resume/projects?
+                   /             \
+                 No               Yes
+                 │                 │
+        Remove/fix false       Return final
+           statements            email
