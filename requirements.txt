@@ -8,3 +8,4 @@ pypdf
 chromadb
 langchain-groq
 langchain-core
+streamlit
