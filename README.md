@@ -27,6 +27,7 @@ instead of writing something misleading.
 
 ## 🧠 How it works
 
+```
 User provides Job URL/Text
           │
           ▼
@@ -37,24 +38,31 @@ LLM extracts structured information
 (Job title, required skills, responsibilities)
           │
           ▼
-Resume is parsed
+Resume is parsed (pypdf)
           │
           ▼
 Projects are converted into embeddings
 and stored in ChromaDB
           │
           ▼
-ChromaDB retrieves the most relevant projects
+LangChain orchestrates the pipeline —
+chaining the extraction prompts, the
+ChromaDB retriever, and the validation
+pass into a single flow
+          │
+          ▼
+ChromaDB retrieves top-k relevant projects
+via cosine similarity
           │
           ▼
 Python calculates:
-• Semantic similarity
-• Skill overlap
+- Semantic similarity (from retrieval)
+- Skill overlap (keyword-level rerank)
           │
           ▼
 Final Match Score
           │
-      Is score above threshold?
+   Is score above threshold? (0.65 default)
          /                 \
       No                    Yes
       │                      │
@@ -73,8 +81,7 @@ Return:                  Generate
                  │                 │
         Remove/fix false       Return final
            statements            email
-
----
+```
 
 ## ✨ Features
 
