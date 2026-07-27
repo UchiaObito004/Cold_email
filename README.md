@@ -109,15 +109,14 @@ Return:                  Generate
 
 ## 📁 Project structure
 
-```
 Cold_email/
-├── api.py              # Everything — parsing, matching, email generation, API endpoints
-├── requirements.txt     # Python dependencies
-├── Dockerfile           # Docker build instructions
-└── .env                 # Your Groq API key (not committed)
-```
+├── app.py # Streamlit app — UI, parsing, matching, email generation
+├── requirements.txt # Python dependencies
+├── Dockerfile # Docker build instructions
+└── .env # Your Groq API key (not committed)
+---
 
-Everything lives in one file (`api.py`) on purpose — no extra files needed to run it.
+Everything lives in one file (`app.py`) on purpose — no extra files needed to run it.
 
 ---
 
@@ -143,9 +142,9 @@ Get a free key at 👉 [console.groq.com](https://console.groq.com)
 
 ### 4. Run it
 ```bash
-uvicorn api:app --reload
+streamlit run app.py
 ```
-Open `http://localhost:8000/docs` in your browser to try it out.
+Open `http://localhost:8501` in your browser to try it out.
 
 ---
 
@@ -156,28 +155,21 @@ No Python setup needed — just Docker:
 docker pull ashborn004/cold-email-api:latest
 docker run -p 8000:8000 -e GROQ_API_KEY=your_groq_api_key_here ashborn004/cold-email-api:latest
 ```
-Then open `http://localhost:8000/docs`.
+Then open `http://localhost:8000` in your browser.
 
 ---
 
 ## 🚀 Usage
 
-The easiest way to try it is through the interactive docs at `/docs` — it lets you fill in
-a form and test any endpoint from your browser, no coding needed.
+1. **Paste a job posting** — either a URL or the full job description text
+2. **Upload your resume** — as a PDF
+3. **Enter your contact details** — so the email can be sent under your name
+4. **Click generate** — the app extracts the job's requirements, matches them against your resume/projects, and calculates a match score
+5. **See the result:**
+   - If your projects genuinely match the role → a ready-to-send cold email is generated and double-checked for accuracy before being shown to you
+   - If they don't match well enough → you get an honest message telling you it isn't a strong fit, instead of a misleading email
 
-**Main endpoints:**
-
-| Endpoint | What it does |
-|---|---|
-| `POST /jobs/extract` | Reads a job posting and pulls out the role, skills, and requirements |
-| `POST /resume/parse` | Reads your resume PDF and pulls out your projects and background |
-| `POST /match` | Checks how well your projects match a job's requirements |
-| `POST /email/generate` | Writes the email from a job and your matched projects |
-| `POST /apply` | Does all of the above in one step — job + resume in, email out |
-
-`POST /apply` is the one most people want — give it a job (link or text), your resume PDF,
-and your contact details, and it returns a ready-to-send email (or an honest "this isn't a
-strong match" if your projects don't fit).
+No API calls, no forms to fill out manually beyond the app itself — everything happens through the Streamlit interface.
 
 ---
 
@@ -195,9 +187,9 @@ reviews the draft and removes anything that isn't actually true, before you ever
 **Why Groq?**
 It's one of the fastest ways to run gpt-oss-120b — emails generate in seconds, not minutes.
 
-**Why is everything in one file?**
-So anyone can download `api.py`, drop it next to a `requirements.txt`, and run it — no
-tracking down multiple files or figuring out imports.
+**Why Streamlit?**
+It gives a clean, no-setup UI for uploading a resume and pasting a job posting — no need to
+understand APIs or send requests manually.
 
 ---
 
