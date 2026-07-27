@@ -19,9 +19,7 @@ instead of writing something misleading.
 
 ![img2](https://github.com/UchiaObito004/Cold_email/blob/main/img2.png?raw=true)
 
-**Live demo:** https://cold-email-7r0i.onrender.com
-
-**Interactive docs:** https://cold-email-7r0i.onrender.com/docs
+**Live Demo:** https://cold-email-7r0i.onrender.com/docs
 
 ---
 
