@@ -50,7 +50,7 @@ pass into a single flow
           │
           ▼
 ChromaDB retrieves top-k relevant projects
-via cosine similarity
+via inverse distance transformation
           │
           ▼
 Python calculates:
