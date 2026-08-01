@@ -60,7 +60,7 @@ Python calculates:
           ▼
 Final Match Score
           │
-   Is score above threshold? (0.65 default)
+   Is score above threshold? (min_score=6.0)
          /                 \
       No                    Yes
       │                      │
